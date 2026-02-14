@@ -19,4 +19,31 @@ describe('Property', () => {
         console.log(customer.name);
         console.log(customer.age);
     });
+
+    it('Latihan ', () => {
+        class Product {
+            readonly idProduct: number;
+            nameProduct: string;
+            description?: string;
+
+            constructor(idproduct: number, nameProduct: string, description?: string) {
+                this.idProduct = idproduct;
+                this.nameProduct = nameProduct;
+                this.description = description;
+            }
+        }
+
+            const product1 = new Product(1, 'Laptop', 'Amd Ryzen 5' )
+            const product2 = new Product(2, 'Smartphone', 'Snapdragon 888' )
+
+            console.log(product1.idProduct);
+            console.log(product1.nameProduct);
+            console.log(product1.description);
+
+            console.log(product2.idProduct);
+            console.log(product2.nameProduct);
+            console.log(product2.description);
+
+        
+    });
 });
