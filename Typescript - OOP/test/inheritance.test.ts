@@ -62,6 +62,9 @@ describe('inherantance', () => {
             console.info(yamaha.wheelie());
             
         });
+
+
+        
     });
 
 });
