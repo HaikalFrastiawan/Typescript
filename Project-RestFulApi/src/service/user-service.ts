@@ -1,10 +1,15 @@
 import { v4 as uuid } from "uuid"; 
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { LoginUserRequest, RegisterUserRequest, UserResponse } from "../model/user-model"; 
 import { UserValidation } from "../validation/user-validation";
 import { Validation } from "../validation/validation";
 import bcrypt from "bcrypt";
+import { 
+    LoginUserRequest, 
+    RegisterUserRequest, 
+    UpdateUserRequest,
+    UserResponse,
+ } from "../model/user-model"; 
 
 export class UserService {
     // ---  REGISTER ---
@@ -86,5 +91,46 @@ export class UserService {
         username: user.username,
         name: user.name
     };
+}
+
+    //update user
+ static async update(user: any, request: UpdateUserRequest): Promise<UserResponse> {
+    const updateRequest = Validation.validate(UserValidation.UPDATE, request);
+
+    const data: any = {};
+    if (updateRequest.name) {
+        data.name = updateRequest.name;
+    }
+
+    if (updateRequest.password) {
+        data.password = await bcrypt.hash(updateRequest.password, 10);
+    }
+
+    const result = await prismaClient.user.update({
+        where: {
+            username: user.username
+        },
+        data: data
+    });
+
+    return {
+        username: result.username,
+        name: result.name
+    };
+    }
+
+    //Logout
+    static async logout(user: any): Promise<string> {
+    // Kita update user yang sedang login, set tokennya jadi null
+    await prismaClient.user.update({
+        where: {
+            username: user.username
+        },
+        data: {
+            token: null
+        }
+    });
+
+    return "OK";
 }
 }

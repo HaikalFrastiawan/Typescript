@@ -14,3 +14,8 @@ export interface LoginUserRequest {
     password: string;
     token?: string;
 }
+
+export interface UpdateUserRequest {
+    password?: string;
+    name?: string;
+}

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { RegisterUserRequest, LoginUserRequest } from "../model/user-model";
+import { RegisterUserRequest, LoginUserRequest, UpdateUserRequest } from "../model/user-model";
 import { UserService } from "../service/user-service";
 
 export class UserController {
@@ -37,6 +37,32 @@ export class UserController {
         const response = await UserService.get(username);
         res.status(200).json({
             data: response
+        });
+    } catch (e) {
+        next(e);
+    }
+}
+    //update
+    static async update(req: Request, res: Response, next: NextFunction) {
+    try {
+        const request: UpdateUserRequest = req.body as UpdateUserRequest;
+        const response = await UserService.update((req as any).user, request);
+        res.status(200).json({
+            data: response
+        });
+    } catch (e) {
+        next(e);
+    }
+    }
+
+    //Logout
+    // Tambahkan di dalam class UserController
+    static async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+        // user didapat dari authMiddleware
+        await UserService.logout((req as any).user);
+        res.status(200).json({
+            data: "OK"
         });
     } catch (e) {
         next(e);
